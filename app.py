@@ -3,15 +3,13 @@ import openai
 import os
 
 app = Flask(__name__)
-
-# 设置你的 OpenAI API Key
-openai.api_key = os.getenv("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")  # 可改为 openai.api_key = "你的key"
+openai.api_key = os.getenv("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")
 
 @app.route("/analyze_trip", methods=["POST"])
 def analyze_trip():
     try:
-        data = request.get_json()
-        text = data.get("text")
+        # 读取原始文本数据（不再使用 request.get_json）
+        text = request.data.decode("utf-8").strip()
 
         if not text:
             return jsonify({"error": "No text provided"}), 400
@@ -45,7 +43,6 @@ def analyze_trip():
 
         result = response['choices'][0]['message']['content']
 
-        # 尝试把返回字符串转为 JSON 对象
         import json
         try:
             structured_data = json.loads(result)
@@ -59,3 +56,4 @@ def analyze_trip():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
