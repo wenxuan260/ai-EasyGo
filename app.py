@@ -1,16 +1,18 @@
 from flask import Flask, request, jsonify
-import openai
+from openai import OpenAI
 import os
+import json
 
 app = Flask(__name__)
-openai.api_key = os.getenv("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")
+
+# 获取 OpenAI API Key
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 @app.route("/analyze_trip", methods=["POST"])
 def analyze_trip():
     try:
-        # 读取原始文本数据（不再使用 request.get_json）
+        # 接收纯文本输入
         text = request.data.decode("utf-8").strip()
-
         if not text:
             return jsonify({"error": "No text provided"}), 400
 
@@ -35,15 +37,16 @@ def analyze_trip():
 }}
 """
 
-        response = openai.ChatCompletion.create(
+        # 使用新版本 openai SDK 的调用方式
+        response = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": prompt}],
             temperature=0.2
         )
 
-        result = response['choices'][0]['message']['content']
+        result = response.choices[0].message.content
 
-        import json
+        # 解析 JSON 格式
         try:
             structured_data = json.loads(result)
         except json.JSONDecodeError:
@@ -54,9 +57,10 @@ def analyze_trip():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+# 启动 Flask 服务，绑定 0.0.0.0 以支持外部访问
 if __name__ == "__main__":
-    import os
-    port = int(os.environ.get("PORT", 5000))  # Render 会提供 PORT 环境变量
+    port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
+
 
 
