@@ -6,7 +6,7 @@ import json
 app = Flask(__name__)
 
 # 获取 OpenAI API Key
-client = OpenAI(api_key=os.getenv("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"))
+client = OpenAI(api_key=os.getenv("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"))
 
 @app.route("/analyze_trip", methods=["POST"])
 def analyze_trip():
