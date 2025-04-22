@@ -5,7 +5,7 @@ import os
 app = Flask(__name__)
 
 # 设置你的 OpenAI API Key
-openai.api_key = os.getenv("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")  # 可改为 openai.api_key = "你的key"
+openai.api_key = os.getenv("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")  # 可改为 openai.api_key = "你的key"
 
 @app.route("/analyze_trip", methods=["POST"])
 def analyze_trip():
