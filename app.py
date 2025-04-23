@@ -18,17 +18,18 @@ def analyze_trip():
             return jsonify({"error": "No text provided"}), 400
 
         prompt = f"""
-从下面的出差描述中提取以下字段，并用 JSON 返回：
-- 起始地
-- 目的地
-- 行驶距离
-- 行驶时长
-- 驾驶时间（日期时间）
+从下面的出差描述中提取以下字段，并直接用 JSON 格式返回，不要添加 markdown 格式（不要加 ```json 等标记）：
+
+- 起始地（start_location）
+- 目的地（end_location）
+- 行驶距离（distance）
+- 行驶时长（duration）
+- 驾驶时间（start_time，格式为 yyyy.MM.dd HH:mm）
 
 示例描述：
 {text}
 
-请返回格式如下：
+请仅返回如下格式（无多余文字、无markdown标记）：
 {{
   "start_location": "",
   "end_location": "",
@@ -37,6 +38,7 @@ def analyze_trip():
   "start_time": ""
 }}
 """
+
 
         # 使用新版本 openai SDK 的调用方式
         response = client.chat.completions.create(
