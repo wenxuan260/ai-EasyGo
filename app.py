@@ -20,8 +20,8 @@ def analyze_trip():
         prompt = f"""
 你将从一段高德地图足迹 OCR 文本中提取以下字段：
 
-1. 起始地（start_location）：文本中**最后两个地名中靠前的一个**
-2. 目的地（end_location）：文本中**最后两个地名中靠后的一个**
+1. 起始地（start_location）：文本中**倒数第四行**
+2. 目的地（end_location）：文本中**倒数第三行**
 3. 行驶距离（distance）：单位为 km，例如 "16.7 km"
 4. 行驶时长（duration）：例如 "00:26:48"
 5. 驾驶时间（start_time）：通常在文本顶部，格式为 yyyy.MM.dd HH:mm，例如 "2025.03.08 13:08"
