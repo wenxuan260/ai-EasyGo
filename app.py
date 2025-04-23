@@ -18,18 +18,19 @@ def analyze_trip():
             return jsonify({"error": "No text provided"}), 400
 
         prompt = f"""
-从下面的出差描述中提取以下字段，并直接用 JSON 格式返回，不要添加 markdown 格式（不要加 ```json 等标记）：
+你将从一段高德地图足迹 OCR 文本中提取以下字段：
 
-- 起始地（start_location）
-- 目的地（end_location）
-- 行驶距离（distance）
-- 行驶时长（duration）
-- 驾驶时间（start_time，格式为 yyyy.MM.dd HH:mm）
+1. 起始地（start_location）：文本中**最后两个地名中靠前的一个**
+2. 目的地（end_location）：文本中**最后两个地名中靠后的一个**
+3. 行驶距离（distance）：单位为 km，例如 "16.7 km"
+4. 行驶时长（duration）：例如 "00:26:48"
+5. 驾驶时间（start_time）：通常在文本顶部，格式为 yyyy.MM.dd HH:mm，例如 "2025.03.08 13:08"
 
-示例描述：
+输入示例：
 {text}
 
-请仅返回如下格式（无多余文字、无markdown标记）：
+请直接返回以下 JSON 格式（不要包含任何解释说明，不要使用 Markdown 标记）：
+
 {{
   "start_location": "",
   "end_location": "",
@@ -38,6 +39,7 @@ def analyze_trip():
   "start_time": ""
 }}
 """
+
 
 
         # 使用新版本 openai SDK 的调用方式
